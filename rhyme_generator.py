@@ -19,12 +19,12 @@ def get_rhyme(word):
     return random.choice(similar_words[:3]).get('word')
 
 def generate_stanza(note):
-    stanza = rap_model.make_sentence(tries=100)
+    stanza = rap_model.make_short_sentence(140, tries=100)
     stanza = stanza.split()
     stanza[-1] = get_rhyme(note.split()[-1])
     return ' '.join(stanza)
 
-if '__name__' == __main__:
+if __name__ == '__main__':
     output_song = []
     input_notes = open(sys.argv[1], 'r')
     output = open('fun_notes.txt', 'w+')
@@ -32,6 +32,5 @@ if '__name__' == __main__:
     all_notes = input_notes.readlines()
     for note in all_notes:
         output_song.append(note)
-        output_song.append(generate_stanza(note))
-
-    output.write('\n'.join(output_song))
+        output_song.append(generate_stanza(note) + '\n')
+    output.write(''.join(output_song))
