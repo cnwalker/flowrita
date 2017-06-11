@@ -16,10 +16,10 @@ def query_datamuse(word, endpoint, mode):
 def get_rhyme(word):
     rhymed_words = query_datamuse(word, 'words', 'rel_rhy')
     similar_words = filter(lambda x: word != x.get('word'), rhymed_words)
-    return random.choice(similar_words[:3]).get('word')
+    return random.choice(similar_words[:5]).get('word')
 
 def generate_stanza(note):
-    stanza = rap_model.make_short_sentence(140, tries=100)
+    stanza = rap_model.make_short_sentence(100, tries=100)
     stanza = stanza.split()
     stanza[-1] = get_rhyme(note.split()[-1])
     return ' '.join(stanza)
@@ -27,7 +27,10 @@ def generate_stanza(note):
 if __name__ == '__main__':
     output_song = []
     input_notes = open(sys.argv[1], 'r')
-    output = open('fun_notes.txt', 'w+')
+    if len(sys.argv) > 2:
+        output = open(sys.argv[2], 'w+')
+    else:
+        output = open('fun_notes.txt', 'w+')
 
     all_notes = input_notes.readlines()
     for note in all_notes:
